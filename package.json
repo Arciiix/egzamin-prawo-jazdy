@@ -1,0 +1,17 @@
+{
+  "name": "prawo-jazdy-terminy",
+  "version": "1.0.0",
+  "description": "Śledzenie terminów na egzamin praktyczny na prawo jazdy",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc .",
+    "start": "tsc . && node dist/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Arciiix",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.7.7",
+    "typescript": "^5.6.3"
+  }
+}
