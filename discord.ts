@@ -34,25 +34,22 @@ export const sendDiscordNotification = async (practiceExam: any) => {
   });
 };
 
-export const sendDiscordNotificationAboutDeletedExam = async (
-  practiceExam: any
-) => {
+export const sendDiscordNotificationAboutDeletedExam = async (id: any) => {
   const webhookUrl = config.WEBHOOK_URL;
 
-  const howManyDays = Math.floor(
-    (new Date(practiceExam.date).getTime() - new Date().getTime()) /
-      (1000 * 60 * 60 * 24)
-  );
+  // const howManyDays = Math.floor(
+  //   (new Date(practiceExam.date).getTime() - new Date().getTime()) /
+  //     (1000 * 60 * 60 * 24)
+  // );
 
-  const prettyDate = new Date(practiceExam.date).toLocaleString("pl-PL", {
-    timeZone: "Europe/Warsaw",
-  });
+  // const prettyDate = new Date(practiceExam.date).toLocaleString("pl-PL", {
+  //   timeZone: "Europe/Warsaw",
+  // });
 
   const message = {
     embeds: [
       {
-        title: `Usunięto egzamin ${prettyDate}`,
-        description: `Data: **${prettyDate}** (za dni: **${howManyDays}**)\nID: **${practiceExam.id}**\nMiejsca: **${practiceExam.places}**\nDodatkowe info: **${practiceExam.additionalInfo}**`,
+        title: `Usunięto egzamin ${id}`,
         color: 0xff0000, // Red color
         timestamp: new Date().toISOString(),
       },
