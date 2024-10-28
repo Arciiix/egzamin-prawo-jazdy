@@ -1,4 +1,5 @@
 import { config } from "./config";
+import { getPolishWeekDay } from "./date";
 
 export const sendDiscordNotification = async (practiceExam: any) => {
   const webhookUrl = config.WEBHOOK_URL;
@@ -18,7 +19,11 @@ export const sendDiscordNotification = async (practiceExam: any) => {
     embeds: [
       {
         title: `Znaleziono nowy egzamin ${prettyDate}`,
-        description: `Data: **${prettyDate}** (za dni: **${howManyDays}**)\nID: **${practiceExam.id}**\nMiejsca: **${practiceExam.places}**\nDodatkowe info: **${practiceExam.additionalInfo}**`,
+        description: `Data: **${prettyDate}** (za dni: **${howManyDays}**, tj. ${getPolishWeekDay(
+          new Date(practiceExam.date)
+        )})\nID: **${practiceExam.id}**\nMiejsca: **${
+          practiceExam.places
+        }**\nDodatkowe info: **${practiceExam.additionalInfo}**`,
         color: 0x00ff00, // Green color
         timestamp: new Date().toISOString(),
       },
