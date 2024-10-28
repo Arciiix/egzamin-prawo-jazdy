@@ -102,6 +102,9 @@ export const search = async () => {
         );
         if (deletedExams.length > 0) {
           logger.info("Deleted exams found!");
+          logger.debug(deletedExams);
+          logger.debug(previousExamsIds);
+          logger.debug(allPracticalExamsIds);
 
           for await (const id of deletedExams) {
             logger.info(`Deleted exam found! id: ${id}`);
@@ -133,12 +136,11 @@ export const search = async () => {
             }
           }
 
-          previousExams = onlyPracticalExams;
-
           logger.debug(previousExams);
         } else {
           logger.info("No new exams found");
         }
+        previousExams = onlyPracticalExams;
 
         // console.log(
         //   util.inspect(data, {
