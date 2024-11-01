@@ -1,5 +1,5 @@
 import { generateBearerToken, getCurrentToken } from "./auth";
-import { config } from "./config";
+import { config } from "./myConfig";
 import {
   sendDiscordNotification,
   sendDiscordNotificationAboutDeletedExam,
@@ -7,10 +7,20 @@ import {
 import { logger } from "./logger";
 import { sleep } from "./sleep";
 import util from "node:util";
+import { reserveExam } from "./reserve";
+import { getIsSearchingForNewExams } from "./status";
 
 let previousExams: any[] = [];
 
 export const search = async () => {
+  if (!getIsSearchingForNewExams()) {
+    logger.info(
+      "isSearchingForNewExams is false. Exiting the program in 20 seconds..."
+    );
+    await sleep(20000);
+    return;
+  }
+
   let retryCount = 0;
   while (true) {
     logger.debug("Checking with retry count: " + retryCount);
@@ -27,12 +37,12 @@ export const search = async () => {
         {
           method: "PUT",
           body: JSON.stringify({
-            category: config.CATEGORY,
-            wordId: config.WORD_ID,
+            category: config.category,
+            wordId: config.wordId,
           }),
           headers: {
             "Content-Type": "application/json",
-            Authorization: await getCurrentToken(),
+            Authorization: await getCurrentToken("fakeCreds"),
           },
         }
       );
@@ -44,15 +54,15 @@ export const search = async () => {
         );
 
         // Try to refetch the token
-        await generateBearerToken();
+        await generateBearerToken("fakeCreds");
       } else {
         const data = await response.json();
         retryCount = 0;
 
         const dataWithinDays = data.schedule.scheduledDays.filter((date) => {
           return (
-            new Date(date.day) >= new Date(config.DATE_FROM) &&
-            new Date(date.day) <= new Date(config.DATE_TO)
+            new Date(date.day) >= new Date(config.dateFrom) &&
+            new Date(date.day) <= new Date(config.dateTo)
           );
         });
 
@@ -132,6 +142,25 @@ export const search = async () => {
                 );
                 // Send notification
                 await sendDiscordNotification(practiceExam);
+
+                // If the date of the exam is within the auto reservation dates, try to reserve it
+                const examDate = new Date(practiceExam.date);
+                const matchingAutoReservation =
+                  config.autoReservationDates.find(
+                    (autoReservation) =>
+                      examDate >= autoReservation.from &&
+                      examDate <= autoReservation.to
+                  );
+
+                if (matchingAutoReservation) {
+                  logger.info(
+                    `Auto-reservation date found! Trying to reserve the exam...`
+                  );
+
+                  await reserveExam(practiceExam);
+
+                  return true;
+                }
               }
             }
           }
@@ -155,7 +184,7 @@ export const search = async () => {
       retryCount++;
     }
 
-    await sleep(config.SLEEP_TIME_MS);
+    await sleep(config.sleepTimeMs);
   }
 };
 function findChangedPracticalExams(onlyPracticalExams, previousExams) {

@@ -1,14 +1,23 @@
-import { config } from "./config";
+import { config } from "./myConfig";
 import { logger } from "./logger";
+import { Credentials, CredentialsTypes } from "./config";
 
 const puppeteer = require("puppeteer");
 
-let currentToken: string | null = null;
+let currentToken: Record<CredentialsTypes, string | null> = {
+  fakeCreds: null,
+  realCreds: null,
+};
 
-export const getCurrentToken = async (): Promise<string> =>
-  currentToken ?? (await generateBearerToken());
+export const getCurrentToken = async (
+  which: CredentialsTypes
+): Promise<string> => currentToken[which] ?? (await generateBearerToken(which));
 
-export const generateBearerToken = async (): Promise<string> => {
+export const generateBearerToken = async (
+  which: CredentialsTypes
+): Promise<string> => {
+  const { login, password } = config[which] as Credentials;
+
   return new Promise(async (resolve, reject) => {
     const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
@@ -25,15 +34,15 @@ export const generateBearerToken = async (): Promise<string> => {
         logger.info("Successfully obtained bearer token!");
         currentToken = headers.authorization;
         resolve(headers.authorization);
-        logger.info("Back to checking free exams...");
+        logger.info("Back after auth...");
         return browser.close();
       }
       request.continue();
     });
 
     await page.goto("https://info-car.pl/oauth2/login"); // wait until page load
-    await page.type(".login-input", config.LOGIN);
-    await page.type(".password-input", config.PASSWORD);
+    await page.type(".login-input", login);
+    await page.type(".password-input", password);
     await page.click("#register-button");
 
     // Wait for the ghost button to be visible before proceeding
