@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Beautiful 24-Hour Datetime Picker</title>
+    <!-- Include Flatpickr CSS from CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+    <style>
+      #copyButton {
+        margin-top: 10px;
+        padding: 5px 10px;
+        cursor: pointer;
+      }
+      #output {
+        font-size: 2em;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Select a Date and Time</h1>
+    <input type="text" id="datetimePicker" placeholder="Select date and time" />
+
+    <p id="output"></p>
+    <button id="copyButton" onclick="copyToClipboard()">Copy ISO Date</button>
+
+    <!-- Include Flatpickr JS from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+      // Initialize Flatpickr with 24-hour time format
+      flatpickr("#datetimePicker", {
+        enableTime: true,
+        dateFormat: "Y-m-d H:i:S", // Format date in 24-hour format
+        time_24hr: true,
+        locale: {
+          firstDayOfWeek: 1,
+        },
+        onChange: function (selectedDates) {
+          if (selectedDates.length > 0) {
+            // Convert selected date to ISO string
+            document.getElementById("output").textContent =
+              selectedDates[0].toISOString();
+          } else {
+            document.getElementById("output").textContent =
+              "Please select a date and time.";
+          }
+        },
+      });
+
+      // Function to copy the output text to clipboard
+      function copyToClipboard() {
+        const outputText = document.getElementById("output").textContent;
+        if (outputText && outputText !== "Please select a date and time.") {
+          navigator.clipboard.writeText(outputText).catch((error) => {
+            alert("Failed to copy text: " + error);
+          });
+        } else {
+          alert("No valid date to copy.");
+        }
+      }
+    </script>
+  </body>
+</html>
