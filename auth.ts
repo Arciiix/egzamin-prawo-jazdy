@@ -32,7 +32,7 @@ export const generateBearerToken = async (
         headers.authorization
       ) {
         logger.info("Successfully obtained bearer token!");
-        currentToken = headers.authorization;
+        currentToken[which] = headers.authorization;
         resolve(headers.authorization);
         logger.info("Back after auth...");
         return browser.close();

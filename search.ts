@@ -44,8 +44,10 @@ export const search = async () => {
             "Content-Type": "application/json",
             Authorization: await getCurrentToken("fakeCreds"),
           },
+          signal: AbortSignal.timeout(5000),
         }
       );
+      logger.debug(`Finished request, status: ${response.status}`);
 
       if (response.status !== 200) {
         retryCount++;
