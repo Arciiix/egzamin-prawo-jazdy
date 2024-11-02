@@ -44,7 +44,7 @@ export const search = async () => {
             "Content-Type": "application/json",
             Authorization: await getCurrentToken("fakeCreds"),
           },
-          signal: AbortSignal.timeout(5000),
+          signal: AbortSignal.timeout(10000),
         }
       );
       logger.debug(`Finished request, status: ${response.status}`);
