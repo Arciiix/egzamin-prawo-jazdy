@@ -1,4 +1,5 @@
 import { generateBearerToken, getCurrentToken } from "./auth";
+import { ReservationDate } from "./config";
 import {
   sendDiscordNotificationTryingToReserve,
   sendRepeatingReservationDiscordNotification,
@@ -8,12 +9,15 @@ import { config } from "./myConfig";
 import { setIsSearchingForNewExams } from "./status";
 import { ensureVPNStatus } from "./vpn";
 
-export async function reserveExam(exam: any & { id: string; date: Date }) {
+export async function reserveExam(
+  exam: any & { id: string; date: Date },
+  reservation: ReservationDate
+) {
   logger.info(
-    `[RESERVE] Reserving exam with id: ${exam.id} and date: ${exam.date}`
+    `[RESERVE] Reserving exam with id: ${exam.id} and date: ${exam.date} (${reservation.name})`
   );
   await setIsSearchingForNewExams(false);
-  await sendDiscordNotificationTryingToReserve(exam);
+  await sendDiscordNotificationTryingToReserve(exam, reservation.name);
 
   await ensureVPNStatus(false);
 
@@ -74,5 +78,5 @@ export async function reserveExam(exam: any & { id: string; date: Date }) {
 
   logger.info(`[RESERVE] Successfully reserved the exam with id: ${exam.id}`);
 
-  await sendRepeatingReservationDiscordNotification(exam);
+  await sendRepeatingReservationDiscordNotification(exam, reservation.name);
 }

@@ -1,3 +1,9 @@
+export type ReservationDate = {
+  from: Date;
+  to: Date;
+  name: string;
+};
+
 export type Config = {
   fakeCreds: Credentials;
   realCreds: Credentials;
@@ -12,7 +18,7 @@ export type Config = {
   wireguardVPNProfileName: string;
   runChromiumFix: boolean; // See https://chromium.googlesource.com/chromium/src/+/main/docs/security/apparmor-userns-restrictions.md
 
-  autoReservationDates: { from: Date; to: Date }[];
+  autoReservationDates: ReservationDate[];
 
   personalInfo: {
     firstName: string;

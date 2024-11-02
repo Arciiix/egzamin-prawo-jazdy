@@ -36,6 +36,7 @@ export const config = {
   // Specify the dates within which you want to automatically reserve the exams. The script will automatically reserve the first available date within the specified ranges, if available
   autoReservationDates: [
     {
+      name: "Dzień wolny szkoły", // A friendly name that tells you when it is
       from: new Date("2024-11-04T07:00:00.000Z"),
       to: new Date("2024-11-04T15:00:00.000Z"),
     },

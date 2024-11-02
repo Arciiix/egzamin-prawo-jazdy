@@ -157,7 +157,7 @@ export const search = async () => {
                     `Auto-reservation date found! Trying to reserve the exam...`
                   );
 
-                  await reserveExam(practiceExam);
+                  await reserveExam(practiceExam, matchingAutoReservation);
 
                   return true;
                 }

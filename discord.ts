@@ -3,7 +3,8 @@ import { getPolishWeekDay } from "./date";
 import { sleep } from "./sleep";
 
 export const sendDiscordNotificationTryingToReserve = async (
-  practiceExam: any
+  practiceExam: any,
+  name: string
 ) => {
   const webhookUrl = config.webhookURL;
 
@@ -14,7 +15,7 @@ export const sendDiscordNotificationTryingToReserve = async (
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      content: "@everyone Próba rezerwacji egzaminu",
+      content: `@everyone Próba rezerwacji egzaminu ${name}`,
     }),
   });
 
@@ -30,7 +31,7 @@ export const sendDiscordNotificationTryingToReserve = async (
   const message = {
     embeds: [
       {
-        title: `Próba rezerwacji egzaminu ${prettyDate}`,
+        title: `Próba rezerwacji egzaminu ${prettyDate} ${name}`,
         description: `Data: **${prettyDate}** (za dni: **${howManyDays}**, tj. ${getPolishWeekDay(
           new Date(practiceExam.date)
         )})\nID: **${practiceExam.id}**\nMiejsca: **${
@@ -120,7 +121,10 @@ export const sendDiscordNotificationAboutDeletedExam = async (id: any) => {
   });
 };
 
-export const sendRepeatingReservationDiscordNotification = async (exam) => {
+export const sendRepeatingReservationDiscordNotification = async (
+  exam,
+  name: string
+) => {
   while (true) {
     const webhookUrl = config.webhookURL;
 
@@ -136,7 +140,7 @@ export const sendRepeatingReservationDiscordNotification = async (exam) => {
     const message = {
       content: `@everyone EGZAMIN ZAREZERWOWANY ${
         exam.id
-      } ${prettyDate}, (za dni: **${howManyDays}**, tj. ${getPolishWeekDay(
+      } ${prettyDate} (${name}), (za dni: **${howManyDays}**, tj. ${getPolishWeekDay(
         new Date(exam.date)
       )})`,
     };
