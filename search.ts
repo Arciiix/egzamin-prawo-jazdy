@@ -1,7 +1,7 @@
 import { generateBearerToken, getCurrentToken } from "./auth";
 import { config } from "./myConfig";
 import {
-  sendDiscordNotification,
+  sendDiscordNotificationAboutNewExam,
   sendDiscordNotificationAboutDeletedExam,
 } from "./discord";
 import { logger } from "./logger";
@@ -143,7 +143,7 @@ export const search = async () => {
                   `New exam found! Date: ${practiceExam.date}, id: ${practiceExam.id}, places: ${practiceExam.places}, add. info: ${practiceExam.additionalInfo}`
                 );
                 // Send notification
-                await sendDiscordNotification(practiceExam);
+                await sendDiscordNotificationAboutNewExam(practiceExam);
 
                 // If the date of the exam is within the auto reservation dates, try to reserve it
                 const examDate = new Date(practiceExam.date);

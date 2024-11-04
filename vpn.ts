@@ -1,3 +1,4 @@
+import { sendDiscordNotificationAboutVPN } from "./discord";
 import { execAsync } from "./exec";
 import { logger } from "./logger";
 import { config } from "./myConfig";
@@ -9,7 +10,12 @@ export async function ensureVPNStatus(
 ): Promise<void> {
   const isVPNConnected = await getVPNStatus();
   if (isVPNConnected === shouldBeConnected) {
-    logger.info(`VPN is ${shouldBeConnected ? "connected" : "disconnected"}`);
+    logger.info(
+      `VPN is currently ${shouldBeConnected ? "connected" : "disconnected"}`
+    );
+
+    await sendDiscordNotificationAboutVPN(shouldBeConnected);
+
     vpnRetries = 0;
     return;
   }

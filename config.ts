@@ -14,6 +14,7 @@ export type Config = {
   dateFrom: string;
   dateTo: string;
   webhookURL: string;
+  importantWebhookURL: string;
   myIp: string;
   wireguardVPNProfileName: string;
   runChromiumFix: boolean; // See https://chromium.googlesource.com/chromium/src/+/main/docs/security/apparmor-userns-restrictions.md
