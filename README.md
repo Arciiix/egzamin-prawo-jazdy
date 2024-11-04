@@ -28,6 +28,7 @@ export const config = {
   dateTo: new Date("2024-11-24T00:00:00.000Z").toISOString(), // Date to which the dates will be checked
 
   webhookURL: "https://discord.com/api/webhooks/myWebhook", // Webhook URL to which the message will be sent
+  importantWebhookURL: "https://discord.com/api/webhooks/myWebhook2", // Webhook URL to which the message about the reservation of the exam will be additionally sent (besides the base webhook)
 
   myIp: "127.0.0.1", // Your IP address, used for controlling the VPN state
   wireguardVPNProfileName: "myVPN", // Name of the Wireguard VPN profile
