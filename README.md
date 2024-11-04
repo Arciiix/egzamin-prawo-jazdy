@@ -37,8 +37,8 @@ export const config = {
   autoReservationDates: [
     {
       name: "Dzień wolny szkoły", // A friendly name that tells you when it is
-      from: new Date("2024-11-04T07:00:00.000Z"),
-      to: new Date("2024-11-04T15:00:00.000Z"),
+      from: new Date("2024-11-04T07:00:00"), // Make sure not to use the ISO format (so please use "2024-11-04T07:00:00" instead of "2024-11-04T07:00:00.000Z")
+      to: new Date("2024-11-04T15:00:00"),
     },
   ],
 
