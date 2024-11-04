@@ -63,7 +63,7 @@ export async function reserveExam(
     },
   });
 
-  if (response.status !== 200) {
+  if (response.status !== 200 && response.status !== 201) {
     logger.error(
       `[RESERVE] Failed to reserve the exam. Status: ${response.status}`
     );
