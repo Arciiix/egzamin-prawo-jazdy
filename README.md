@@ -54,7 +54,7 @@ export const config = {
 };
 ```
 
-3. Make sure user has the sufficient permissions to run the commands, e.g. for wh-quick up command - see: https://superuser.com/a/1823621
+3. Make sure user has the sufficient permissions to run the commands, e.g. for wg-quick up command - see: https://superuser.com/a/1823621
 
 - wg-quick up
 - wg-quick down
