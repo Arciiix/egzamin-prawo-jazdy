@@ -14,6 +14,7 @@ export type Config = {
   dateFrom: string;
   dateTo: string;
   webhookURL: string;
+  dontGoToNormalIpOnReserve?: boolean;
   importantWebhookURL: string;
   myIp: string;
   wireguardVPNProfileName: string;

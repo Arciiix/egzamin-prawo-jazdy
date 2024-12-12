@@ -1,5 +1,6 @@
 node_modules
 myConfig.ts
+myConfig copy.ts
 
 # Wireguard configurations
 *.conf

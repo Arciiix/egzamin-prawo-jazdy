@@ -19,7 +19,9 @@ export async function reserveExam(
   await setIsSearchingForNewExams(false);
   await sendDiscordNotificationTryingToReserve(exam, reservation.name);
 
-  await ensureVPNStatus(false);
+  if (!config.dontGoToNormalIpOnReserve) {
+    await ensureVPNStatus(false);
+  }
 
   logger.info("[RESERVE] Starting the reservation process");
 

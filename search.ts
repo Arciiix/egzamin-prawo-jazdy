@@ -39,10 +39,16 @@ export const search = async () => {
           body: JSON.stringify({
             category: config.category,
             wordId: config.wordId,
+            startDate: new Date(config.dateFrom).toISOString(),
+            endDate: new Date(config.dateTo).toISOString(),
           }),
           headers: {
             "Content-Type": "application/json",
             Authorization: await getCurrentToken("fakeCreds"),
+            Referer:
+              "https://info-car.pl/new/prawo-jazdy/sprawdz-wolny-termin/wybor-terminu",
+            "User-Agent":
+              "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.111 Safari/537.36",
           },
           signal: AbortSignal.timeout(10000),
         }
@@ -52,13 +58,15 @@ export const search = async () => {
       if (response.status !== 200) {
         retryCount++;
         logger.error(
-          `Failed to update the exam schedule. Status: ${response.status}`
+          `Failed to update the exam schedule. Status: ${response.status}, body: ${response.body}`
         );
 
         // Try to refetch the token
         await generateBearerToken("fakeCreds");
       } else {
-        const data = await response.json();
+        const dataText = await response.text();
+        logger.debug(dataText);
+        const data = JSON.parse(dataText);
         retryCount = 0;
 
         const dataWithinDays = data.schedule.scheduledDays.filter((date) => {
