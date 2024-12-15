@@ -24,7 +24,7 @@ export const search = async () => {
   let retryCount = 0;
   while (true) {
     logger.debug("Checking with retry count: " + retryCount);
-    if (retryCount >= 3) {
+    if (retryCount >= 5) {
       logger.error("Failed to update the exam schedule");
 
       // Exit the program with error code
